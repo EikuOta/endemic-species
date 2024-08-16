@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本固有種検索</title>
+</head>
+<body>
+    <h1>日本固有種検索</h1>
+
+    <form action="/" method="GET">
+        <label for="query">検索キーワード:</label>
+        <input type="text" id="query" name="query" value="<%= locals.query || '' %>" required>
+        <button type="submit">検索</button>
+    </form>
+
+    <% if (locals.error) { %>
+        <p><strong>エラー:</strong> <%= error %></p>
+    <% } %>
+
+    <% if (locals.species && species.length > 0) { %>
+        <h2>検索結果</h2>
+        <ul>
+        <% species.forEach(species => { %>
+            <li>
+                <h3><%= species.japanese_name %> (<%= species.scientific_name %>)</h3>
+                <p>目: <%= species.order_name_ja %> (<%= species.order_name_en %>)</p>
+                <p>科: <%= species.family_name_ja %> (<%= species.family_name_en %>)</p>
+                <p>属: <%= species.genus_name %></p>
+                <p>種: <%= species.species_name %></p>
+                <% if (species.subspecies_name) { %>
+                    <p>亜種: <%= species.subspecies_name %></p>
+                <% } %>
+                <p>分布: <%= species.distribution %></p>
+                <% if (species.note) { %>
+                    <p>備考: <%= species.note %></p>
+                <% } %>
+            </li>
+        <% }); %>
+        </ul>
+    <% } else if (locals.query) { %>
+        <p>該当する種が見つかりませんでした。</p>
+    <% } %>
+</body>
+</html>
+
