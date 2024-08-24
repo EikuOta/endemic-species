@@ -5,3 +5,6 @@ npm-shrinkwrap.json
 *.log
 *.gz
 *.sqlite
+*.csv
+
+/public

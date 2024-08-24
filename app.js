@@ -42,30 +42,7 @@ app.get('/', async (req, res) => {
   res.render('index', { species, query, error });
 });
 
-// データの初期化（アプリケーション起動時に一度だけ実行）
-async function initializeData() {
-  await Species.sync({ force: true });
-  
-  await Species.bulkCreate([
-    {
-      japanese_name: 'ニホンザル',
-      scientific_name: 'Macaca fuscata',
-      order_name_ja: '霊長目',
-      order_name_en: 'Primates',
-      family_name_ja: 'オナガザル科',
-      family_name_en: 'Cercopithecidae',
-      genus_name: 'Macaca',
-      species_name: 'fuscata',
-      distribution: '本州，四国，九州，屋久島',
-      note: '日本固有種'
-    },
-  ]);
-
-  console.log('データベースが初期化されました。');
-}
-
 sequelize.sync()
-  .then(() => initializeData())
   .then(() => {
     app.listen(port, () => {
       console.log(`Server running at http://localhost:${port}`);

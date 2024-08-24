@@ -8,23 +8,53 @@ const Species = sequelize.define('Species', {
     allowNull: false
   },
   // 学名
-  scientific_name: DataTypes.STRING,
+  scientific_name: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   // 目
-  order_name_ja: DataTypes.STRING,
-  order_name_en: DataTypes.STRING,
+  order_name_ja: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  order_name_en: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   // 科
-  family_name_ja: DataTypes.STRING,
-  family_name_en: DataTypes.STRING,
+  family_name_ja: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  family_name_en: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   // 属
-  genus_name: DataTypes.STRING,
+  genus_name: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   // 種
-  species_name: DataTypes.STRING,
+  species_name: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   // 亜種
-  subspecies_name: DataTypes.STRING,
+  subspecies_name: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   // 分布
-  distribution: DataTypes.TEXT,
+  distribution: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
   // 備考
-  note: DataTypes.TEXT
+  note: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  }
 });
 
 module.exports = Species;
