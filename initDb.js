@@ -1,6 +1,20 @@
 const { Sequelize } = require('sequelize');
 const Species = require('./models/species');
 const sequelize = require('./config/database');
+const fs = require('fs');
+const { parse } = require('csv-parse');
+const path = require('path');
+
+async function readCSV(filePath) {
+  return new Promise((resolve, reject) => {
+    const results = [];
+    fs.createReadStream(filePath)
+      .pipe(parse({ delimiter: ',', columns: true, trim: true }))
+      .on('data', (data) => results.push(data))
+      .on('end', () => resolve(results))
+      .on('error', (error) => reject(error));
+  });
+}
 
 async function initializeDatabase() {
   try {
@@ -12,34 +26,13 @@ async function initializeDatabase() {
     await Species.sync({ force: true });
     console.log('Speciesテーブルが作成されました。');
 
-    // サンプルデータの挿入
-    await Species.bulkCreate([
-      {
-        japanese_name: 'ニホンザル',
-        scientific_name: 'Macaca fuscata',
-        order_name_ja: '霊長目',
-        order_name_en: 'Primates',
-        family_name_ja: 'オナガザル科',
-        family_name_en: 'Cercopithecidae',
-        genus_name: 'Macaca',
-        species_name: 'fuscata',
-        distribution: '本州，四国，九州，屋久島',
-        note: '日本固有種'
-      },
-      {
-        japanese_name: 'ミズラモグラ',
-        scientific_name: 'Euroscaptor mizura',
-        order_name_ja: '食虫目',
-        order_name_en: 'Insectivora',
-        family_name_ja: 'モグラ科',
-        family_name_en: 'Talpidae',
-        genus_name: 'Euroscaptor',
-        species_name: 'mizura',
-        distribution: '本州の山地',
-        note: ''
-      },
-    ]);
-    console.log('サンプルデータが挿入されました。');
+    // CSVファイルからデータを読み込む
+    const csvFilePath = path.join(__dirname, 'data', 'species.csv');
+    const speciesData = await readCSV(csvFilePath);
+
+    // データの挿入
+    await Species.bulkCreate(speciesData);
+    console.log(`${speciesData.length}件のデータが挿入されました。`);
 
     console.log('データベースの初期化が完了しました。');
   } catch (error) {
@@ -50,3 +43,4 @@ async function initializeDatabase() {
 }
 
 initializeDatabase();
+
