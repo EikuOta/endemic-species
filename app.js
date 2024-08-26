@@ -1,14 +1,19 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const { Op } = require('sequelize');
 const sequelize = require('./config/database');
 const Species = require('./models/species');
 
 const app = express();
-const port = 4511;
+const PORT = process.env.PORT || 4511;
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+console.log('Current directory:', __dirname);
+console.log('Files in public/styles:', fs.readdirSync(path.join(__dirname, 'public', 'styles')));
 
 app.get('/', async (req, res) => {
   const { query } = req.query;
@@ -44,8 +49,8 @@ app.get('/', async (req, res) => {
 
 sequelize.sync()
   .then(() => {
-    app.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}`);
+    app.listen(PORT, () => {
+      console.log(`Server running at http://localhost:${PORT}`);
     });
   })
   .catch(error => console.error('データベース初期化エラー:', error));
