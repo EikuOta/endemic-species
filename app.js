@@ -15,6 +15,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 console.log('Current directory:', __dirname);
 console.log('Files in public/styles:', fs.readdirSync(path.join(__dirname, 'public', 'styles')));
 
+// addVoiceMarks関数の追加
+function addVoiceMarks(str) {
+  const voicedChars = {
+    'カ': 'ガ', 'キ': 'ギ', 'ク': 'グ', 'ケ': 'ゲ', 'コ': 'ゴ',
+    'サ': 'ザ', 'シ': 'ジ', 'ス': 'ズ', 'セ': 'ゼ', 'ソ': 'ゾ',
+    'タ': 'ダ', 'チ': 'ヂ', 'ツ': 'ヅ', 'テ': 'デ', 'ト': 'ド',
+    'ハ': 'バ', 'ヒ': 'ビ', 'フ': 'ブ', 'ヘ': 'ベ', 'ホ': 'ボ'
+  };
+  const semiVoicedChars = {
+    'ハ': 'パ', 'ヒ': 'ピ', 'フ': 'プ', 'ヘ': 'ペ', 'ホ': 'ポ'
+  };
+  
+  return str.split('').map(char => {
+    return voicedChars[char] || semiVoicedChars[char] || char;
+  }).join('');
+}
+
 app.get('/', async (req, res) => {
   const { query } = req.query;
   let species = [];
@@ -22,10 +39,12 @@ app.get('/', async (req, res) => {
 
   if (query) {
     try {
+      const voicedQuery = addVoiceMarks(query);
       species = await Species.findAll({
         where: {
           [Op.or]: [
             { japanese_name: { [Op.like]: `%${query}%` } },
+            { japanese_name: { [Op.like]: `%${voicedQuery}%` } },
             { scientific_name: { [Op.like]: `%${query}%` } },
             { order_name_ja: { [Op.like]: `%${query}%` } },
             { order_name_en: { [Op.like]: `%${query}%` } },
