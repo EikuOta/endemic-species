@@ -3,6 +3,33 @@
 ## 動機
 夏休みの自由研究で固有種を調べようと思いインターネットで検索してみたが、固有種を検索できるシステムが無かったため自分で作ろうと思った。
 
+## 注意事項
+小学生の夏休みの自由研究で作成したものです。
+
+## 実行方法
+
+- 必要なパッケージのインストール
+```
+npm install
+```
+
+- CSSのビルド
+```
+npm run build:css
+```
+
+- データベースの初期化、データ投入
+    - [data/species.csv](https://github.com/EikuOta/endemic-species/blob/main/data/species.csv) の内容がSQLiteにインサートされます。
+```
+npm run init-db
+```
+
+
+- 起動
+```
+npm start
+```
+
 ## 参考資料
 [国立科学博物館 日本固有種目録](https://www.kahaku.go.jp/research/activities/project/hotspot_japan/endemic_list/)
 
