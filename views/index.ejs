@@ -25,10 +25,20 @@
                 
                 <form action="/" method="GET" class="mb-5">
                     <div class="flex items-center border-b border-indigo-500 py-2">
-                        <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" id="query" name="query" value="<%= locals.query || '' %>" required placeholder="検索キーワード">
+                        <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" id="query" name="query" value="<%= locals.query || '' %>" required placeholder="和名・属名・分布など">
                         <button class="flex-shrink-0 bg-indigo-500 hover:bg-indigo-700 border-indigo-500 hover:border-indigo-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit">検索</button>
                     </div>
                 </form>
+
+		<!-- おすすめキーワードの追加 -->
+                <div class="mt-4 mb-8 text-sm text-gray-600">
+                    <p>おすすめのキーワード:</p>
+                    <div class="mt-2 flex flex-wrap gap-2">
+                        <a href="/?query=隠岐" class="bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1">隠岐</a>
+                        <a href="/?query=ネコ" class="bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1">ネコ</a>
+                        <a href="/?query=コイ" class="bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1">コイ</a>
+                    </div>
+                </div>
 
                 <% if (locals.error) { %>
                     <p class="text-red-500 mb-5"><strong>エラー:</strong> <%= error %></p>
