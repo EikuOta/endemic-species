@@ -13,24 +13,24 @@
     <!-- End Google Tag Manager -->
     <link href="/styles/main.css" rel="stylesheet">
 </head>
-<body class="antialiased text-gray-900">
+<body class="antialiased text-gray-900 flex flex-col min-h-screen">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P8727CJH"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div class="flex-grow bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
         <div class="relative py-3 sm:max-w-xl sm:mx-auto">
             <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
                 <h1 class="text-3xl font-bold mb-5 text-center text-indigo-600">日本固有種検索</h1>
-                
+
                 <form action="/" method="GET" class="mb-5">
                     <div class="flex items-center border-b border-indigo-500 py-2">
-                        <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" id="query" name="query" value="<%= locals.query || '' %>" required placeholder="和名・属名・分布など">
+                        <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" id="query" name="query" value="<%= locals.query || '' %>" required placeholder=" 和名・属名・分布など">
                         <button class="flex-shrink-0 bg-indigo-500 hover:bg-indigo-700 border-indigo-500 hover:border-indigo-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit">検索</button>
                     </div>
                 </form>
 
-		<!-- おすすめキーワードの追加 -->
+                <!-- おすすめキーワードの追加 -->
                 <div class="mt-4 mb-8 text-sm text-gray-600">
                     <p>おすすめのキーワード:</p>
                     <div class="mt-2 flex flex-wrap gap-2">
@@ -51,8 +51,8 @@
                     <% species.forEach(species => { %>
                         <li class="bg-gray-50 rounded-lg shadow p-6">
                             <h3 class="text-xl font-bold text-indigo-700 mb-2">
-                                <%= species.japanese_name %> 
-                                (<% 
+                                <%= species.japanese_name %>
+                                (<%
                                 let scientificName = species.scientific_name;
                                 if (!scientificName) {
                                     scientificName = [species.genus_name, species.species_name, species.subspecies_name].filter(Boolean).join(' ');
@@ -85,6 +85,59 @@
             </div>
         </div>
     </div>
+
+    <!-- フッターの追加 -->
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center">
+            <p>&copy; <%= new Date().getFullYear() %> 日本固有種検索. All rights reserved.</p>
+            <button id="sourceBtn" class="mt-2 text-sm underline">出典情報</button>
+        </div>
+    </footer>
+
+    <!-- 出典情報のポップアップ -->
+    <div id="sourcePopup" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">出典情報</h3>
+                <div class="text-left mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500">
+		    <a class="font-bold underline" href="https://www.kahaku.go.jp/research/activities/project/hotspot_japan/endemic_list/" target="_blank">国立科学博物館 日本固有種目録</a><br>
+                        引用: 川田伸一郎 (2015). ほ乳類日本固有種目録(2014年3月版).<br>
+                        引用: 西海功 (2015). 鳥類日本固有種目録(2015年3月版).<br>
+                        引用: 吉川夏彦・疋田努 (2018). 爬虫類日本固有種目録(2018年2月版).<br>
+                        引用: 吉川夏彦・松井正文 (2018). 両生類日本固有種目録(2018年2月版).<br>
+                        引用: 国立科学博物館生物多様性ホットスポット魚類チーム (2018). 魚類日本固有種目録 (2018年2月版).<br>
+                        引用: 神保宇嗣 (2018). 鱗翅類日本固有種目録(2018年3月版).<br>
+                        引用: 亀田勇一 (2018). 陸・淡水産腹足類日本固有種目録(2018年3月版).
+                    </p>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="closePopup" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        閉じる
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sourceBtn = document.getElementById('sourceBtn');
+        const sourcePopup = document.getElementById('sourcePopup');
+        const closePopup = document.getElementById('closePopup');
+
+        sourceBtn.addEventListener('click', () => {
+            sourcePopup.classList.remove('hidden');
+        });
+
+        closePopup.addEventListener('click', () => {
+            sourcePopup.classList.add('hidden');
+        });
+
+        sourcePopup.addEventListener('click', (e) => {
+            if (e.target === sourcePopup) {
+                sourcePopup.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
-
